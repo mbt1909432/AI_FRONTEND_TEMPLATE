@@ -46,13 +46,14 @@ AgentBuilder 是一款旨在通过对话生成 Agentic System 的创新平台。
 
 - Node.js >= 14.0.0
 - npm >= 6.0.0
+- Docker (可选，用于容器化部署)
 
-### 安装步骤
+### 方式一：本地开发
 
 ```bash
 # 1. 克隆项目
 git clone <repository-url>
-cd agentic-system-builder
+cd chat-to-agent
 
 # 2. 安装依赖
 npm install
@@ -63,6 +64,17 @@ npm start
 # 4. 在浏览器中访问
 # http://localhost:3000
 ```
+
+### 方式二：Docker 部署（推荐）
+
+```bash
+# 使用 Docker Compose 一键部署
+docker-compose up -d
+
+# 访问 http://localhost:1923
+```
+
+详细的 Docker 部署指南请查看 [DOCKER.md](DOCKER.md)
 
 ### 生产构建
 

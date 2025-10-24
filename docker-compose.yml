@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  chat-to-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "1923:80"
+    container_name: chat-to-agent
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - chat-to-agent-network
+
+networks:
+  chat-to-agent-network:
+    driver: bridge
+
