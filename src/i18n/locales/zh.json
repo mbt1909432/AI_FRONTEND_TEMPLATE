@@ -1,0 +1,107 @@
+{
+  "header": {
+    "login": "登录",
+    "signup": "免费注册"
+  },
+  "hero": {
+    "title": "通过对话构建",
+    "titleHighlight": "agentic-system",
+    "subtitle": "像聊天一样简单轻松",
+    "inputLabel": "您想构建什么样的 Agent？",
+    "inputPlaceholder": "例如：创建一个能够自动分析客户反馈，生成报告，并通过邮件发送给团队的 Agent 系统...",
+    "thinking": "思考中",
+    "beta": "Beta",
+    "features": {
+      "zeroCode": "零代码构建",
+      "highAvailability": "高可用性",
+      "lowCost": "降低成本",
+      "autoOrchestration": "自动编排"
+    }
+  },
+  "templates": {
+    "categories": {
+      "all": "全部模板",
+      "business": "商业",
+      "research": "研究",
+      "technical": "技术",
+      "social": "社交媒体"
+    },
+    "items": {
+      "customerFeedback": {
+        "title": "客户反馈分析 Agent",
+        "description": "自动收集并分析客户反馈，生成洞察报告，识别关键问题和改进机会。",
+        "tags": ["分析", "自动化"]
+      },
+      "dataClean": {
+        "title": "数据清洗助手",
+        "description": "智能识别并清洗数据集中的异常值、重复项和格式错误，提高数据质量。",
+        "tags": ["数据处理"]
+      },
+      "contentGeneration": {
+        "title": "内容生成引擎",
+        "description": "基于主题和风格要求，自动生成高质量的营销文案、博客文章和社交媒体内容。",
+        "tags": ["内容", "AI"]
+      },
+      "smartCustomerService": {
+        "title": "智能客服系统",
+        "description": "24/7 在线的 AI 客服，能够理解客户问题并提供准确的解答和解决方案。",
+        "tags": ["客服", "对话"]
+      },
+      "competitorMonitor": {
+        "title": "竞品监控 Agent",
+        "description": "持续追踪竞争对手的产品更新、价格变化和市场动态，生成竞争分析报告。",
+        "tags": ["监控", "分析"]
+      },
+      "codeReview": {
+        "title": "代码审查助手",
+        "description": "自动审查代码质量，发现潜在 bug、安全漏洞和性能问题，提供优化建议。",
+        "tags": ["代码", "质量"]
+      },
+      "meetingSummary": {
+        "title": "会议总结 Agent",
+        "description": "自动记录会议内容，提取关键决策和行动项，生成结构化的会议纪要。",
+        "tags": ["会议", "总结"]
+      },
+      "academicAssistant": {
+        "title": "学术论文助手",
+        "description": "帮助研究人员检索相关文献，总结研究成果，生成文献综述和参考文献。",
+        "tags": ["学术", "研究"]
+      },
+      "seoOptimization": {
+        "title": "SEO 优化 Agent",
+        "description": "分析网站 SEO 表现，提供关键词建议，优化内容结构，提升搜索引擎排名。",
+        "tags": ["SEO", "优化"]
+      },
+      "emailClassification": {
+        "title": "邮件自动分类",
+        "description": "智能分类和优先级排序邮件，自动回复常见询问，提高沟通效率。",
+        "tags": ["邮件", "自动化"]
+      },
+      "financialAnalysis": {
+        "title": "财务报表分析",
+        "description": "自动解析财务数据，生成可视化报表，识别财务趋势和异常情况。",
+        "tags": ["财务", "分析"]
+      },
+      "apiTesting": {
+        "title": "API 测试 Agent",
+        "description": "自动化 API 端点测试，验证响应格式，检测性能瓶颈和错误处理。",
+        "tags": ["测试", "API"]
+      }
+    },
+    "actions": {
+      "view": "查看详情",
+      "use": "使用模板"
+    }
+  },
+  "footer": {
+    "legal": "法律",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "social": "社交",
+    "twitter": "X / Twitter",
+    "discord": "Discord",
+    "github": "GitHub",
+    "copyright": "© 2025 Chat To Agent. 让 Agent 构建变得简单。"
+  }
+}
+

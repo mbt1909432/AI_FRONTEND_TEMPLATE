@@ -1,0 +1,107 @@
+{
+  "header": {
+    "login": "Login",
+    "signup": "Sign up for free"
+  },
+  "hero": {
+    "title": "Build",
+    "titleHighlight": "agentic-systems",
+    "subtitle": "as effortlessly as chatting with a friend.",
+    "inputLabel": "What Agent do you want to build?",
+    "inputPlaceholder": "For example: Create an agent system that automatically analyzes customer feedback, generates reports, and sends them to the team via email...",
+    "thinking": "Thinking",
+    "beta": "Beta",
+    "features": {
+      "zeroCode": "Zero Code",
+      "highAvailability": "High Availability",
+      "lowCost": "Cost Reduction",
+      "autoOrchestration": "Auto Orchestration"
+    }
+  },
+  "templates": {
+    "categories": {
+      "all": "All Templates",
+      "business": "Business",
+      "research": "Research",
+      "technical": "Technical",
+      "social": "Social Media"
+    },
+    "items": {
+      "customerFeedback": {
+        "title": "Customer Feedback Analyzer",
+        "description": "Automatically collect and analyze customer feedback, generate insight reports, identify key issues and improvement opportunities.",
+        "tags": ["Analytics", "Automation"]
+      },
+      "dataClean": {
+        "title": "Data Cleaning Assistant",
+        "description": "Intelligently identify and clean outliers, duplicates, and format errors in datasets to improve data quality.",
+        "tags": ["Data Processing"]
+      },
+      "contentGeneration": {
+        "title": "Content Generation Engine",
+        "description": "Automatically generate high-quality marketing copy, blog posts, and social media content based on topics and style requirements.",
+        "tags": ["Content", "AI"]
+      },
+      "smartCustomerService": {
+        "title": "Smart Customer Service System",
+        "description": "24/7 AI customer service that understands customer questions and provides accurate answers and solutions.",
+        "tags": ["Support", "Chat"]
+      },
+      "competitorMonitor": {
+        "title": "Competitor Monitoring Agent",
+        "description": "Continuously track competitors' product updates, price changes, and market dynamics, generate competitive analysis reports.",
+        "tags": ["Monitor", "Analytics"]
+      },
+      "codeReview": {
+        "title": "Code Review Assistant",
+        "description": "Automatically review code quality, find potential bugs, security vulnerabilities, and performance issues, provide optimization suggestions.",
+        "tags": ["Code", "Quality"]
+      },
+      "meetingSummary": {
+        "title": "Meeting Summary Agent",
+        "description": "Automatically record meeting content, extract key decisions and action items, generate structured meeting minutes.",
+        "tags": ["Meeting", "Summary"]
+      },
+      "academicAssistant": {
+        "title": "Academic Research Assistant",
+        "description": "Help researchers retrieve relevant literature, summarize research findings, generate literature reviews and references.",
+        "tags": ["Academic", "Research"]
+      },
+      "seoOptimization": {
+        "title": "SEO Optimization Agent",
+        "description": "Analyze website SEO performance, provide keyword suggestions, optimize content structure, improve search engine rankings.",
+        "tags": ["SEO", "Optimization"]
+      },
+      "emailClassification": {
+        "title": "Email Auto-Classification",
+        "description": "Intelligently classify and prioritize emails, automatically reply to common inquiries, improve communication efficiency.",
+        "tags": ["Email", "Automation"]
+      },
+      "financialAnalysis": {
+        "title": "Financial Statement Analysis",
+        "description": "Automatically parse financial data, generate visual reports, identify financial trends and anomalies.",
+        "tags": ["Finance", "Analytics"]
+      },
+      "apiTesting": {
+        "title": "API Testing Agent",
+        "description": "Automate API endpoint testing, verify response formats, detect performance bottlenecks and error handling.",
+        "tags": ["Testing", "API"]
+      }
+    },
+    "actions": {
+      "view": "View Details",
+      "use": "Use Template"
+    }
+  },
+  "footer": {
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "social": "Social",
+    "twitter": "X / Twitter",
+    "discord": "Discord",
+    "github": "GitHub",
+    "copyright": "© 2025 Chat To Agent. Making agent building simple."
+  }
+}
+
