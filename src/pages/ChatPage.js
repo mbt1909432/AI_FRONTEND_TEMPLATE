@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import './ChatPage.css';
 import LanguageSwitcher from '../components/common/LanguageSwitcher';
 import AgentFlowEditor from '../components/workflow/AgentFlowEditor';
+import SessionList from '../components/chat/SessionList';
+import { useSessionManager } from '../hooks/useSessionManager';
 
 function ChatPage() {
   const { t } = useTranslation();
@@ -11,19 +13,29 @@ function ChatPage() {
   const navigate = useNavigate();
   const initialPrompt = location.state?.prompt || '';
   
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      role: 'assistant',
-      content: '您好！我看到您发送了"' + (initialPrompt || '1') + '" - 我能为您做些什么？您是想测试对话、开始计数，还是有特定的内容想要讨论？',
-    }
-  ]);
+  // Session 管理
+  const {
+    sessions,
+    currentSession,
+    currentSessionId,
+    createSession,
+    deleteSession,
+    renameSession,
+    switchSession,
+    updateMessages,
+    addMessage,
+    updateWorkflowConfig
+  } = useSessionManager();
+
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const [isWorkflowCollapsed, setIsWorkflowCollapsed] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isWorkflowOpen, setIsWorkflowOpen] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // 使用当前 session 的消息
+  const messages = currentSession?.messages || [];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -38,29 +50,46 @@ function ChatPage() {
     if (!input.trim() || isThinking) return;
 
     const userMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       role: 'user',
       content: input
     };
 
-    setMessages([...messages, userMessage]);
+    addMessage(userMessage);
     setInput('');
     setIsThinking(true);
 
     // 模拟 AI 响应
     setTimeout(() => {
       const aiMessage = {
-        id: messages.length + 2,
+        id: Date.now() + 1,
         role: 'assistant',
         content: '这是一个模拟回复。在实际应用中，这里会连接到您的 AI Agent 系统。'
       };
-      setMessages(prev => [...prev, aiMessage]);
+      addMessage(aiMessage);
       setIsThinking(false);
     }, 1500);
   };
 
   const handleNewChat = () => {
-    navigate('/');
+    // 自动生成编号
+    const existingNumbers = sessions
+      .map(s => {
+        const match = s.name.match(/^新对话(\d+)?$/);
+        return match ? (match[1] ? parseInt(match[1]) : 1) : null;
+      })
+      .filter(n => n !== null);
+    
+    const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
+    const newName = nextNumber === 1 ? '新对话' : `新对话${nextNumber}`;
+    
+    createSession(newName);
+  };
+
+  const handleSessionSelect = (sessionId) => {
+    switchSession(sessionId);
+    // 移动端自动关闭侧边栏
+    setIsSidebarOpen(false);
   };
 
   return (
@@ -91,12 +120,13 @@ function ChatPage() {
         </div>
 
         <div className="sidebar-content">
-          <div className="chat-history">
-            <div className="history-item active">
-              <span className="history-icon">💬</span>
-              <span className="history-text">{initialPrompt || '新对话'}</span>
-            </div>
-          </div>
+          <SessionList
+            sessions={sessions}
+            currentSessionId={currentSessionId}
+            onSessionSelect={handleSessionSelect}
+            onSessionRename={renameSession}
+            onSessionDelete={deleteSession}
+          />
         </div>
 
         <div className="sidebar-footer">
@@ -199,6 +229,9 @@ function ChatPage() {
         isCollapsed={isWorkflowCollapsed}
         onToggle={() => setIsWorkflowCollapsed(!isWorkflowCollapsed)}
         isOpen={isWorkflowOpen}
+        sessionName={currentSession?.name || '新对话'}
+        workflowConfig={currentSession?.workflowConfig}
+        onWorkflowConfigChange={updateWorkflowConfig}
       />
     </div>
   );

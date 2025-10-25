@@ -1,7 +1,7 @@
 /* 工具库容器 */
 .tools-library {
   min-height: 100vh;
-  background: #fff;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); /* 与 landing page 保持一致 */
   padding-bottom: 80px;
 }
 

@@ -11,6 +11,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import AgentNode from '../AgentNode';
 import { InputNode, OutputNode } from '../InputOutputNode';
+import { getToolById } from '../../../data/toolsData';
 import './AgentFlowEditor.css';
 
 const nodeTypes = {
@@ -19,46 +20,28 @@ const nodeTypes = {
   outputNode: OutputNode,
 };
 
-const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
+const AgentFlowEditor = ({ 
+  isCollapsed, 
+  onToggle, 
+  isOpen = false, 
+  sessionName = '新对话',
+  workflowConfig = null,
+  onWorkflowConfigChange
+}) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [workflowConfig, setWorkflowConfig] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [runResult, setRunResult] = useState(null);
   const [userInput, setUserInput] = useState('');
   const [agentInstructions, setAgentInstructions] = useState({});
   const [agentHandoffDescs, setAgentHandoffDescs] = useState({});
+  const [agentTools, setAgentTools] = useState({});
   const fileInputRef = useRef(null);
+  const [currentSessionName, setCurrentSessionName] = useState(sessionName);
+  const isInitialMount = useRef(true); // 跟踪是否是首次挂载
 
-  // 监听 edges 变化，动态更新节点的 handoffs 显示
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        // 只更新 Agent 节点
-        if (node.type === 'agentNode') {
-          // 从 edges 中找出当前节点连接到的所有 Agent 节点
-          const handoffs = edges
-            .filter((edge) => edge.source === node.id)
-            .map((edge) => edge.target)
-            .filter((targetId) => {
-              // 排除 input 和 output 节点
-              return targetId !== 'input-node' && targetId !== 'output-node';
-            });
-
-          // 更新节点的 handoffs 数据
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              handoffs: handoffs,
-            },
-          };
-        }
-        return node;
-      })
-    );
-  }, [edges, setNodes]);
-
+  // ============ 定义所有回调函数 ============
+  
   // 处理输入节点数据变化
   const handleInputChange = useCallback((value) => {
     setUserInput(value);
@@ -79,6 +62,30 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
       [agentName]: newHandoffDesc
     }));
   }, []);
+
+  // 处理 Agent 工具选择变化
+  const handleToolsChange = useCallback((agentName, newTools) => {
+    setAgentTools(prev => ({
+      ...prev,
+      [agentName]: newTools
+    }));
+    
+    // 同时更新节点的 data.tools
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.data && node.data.name === agentName) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              tools: newTools
+            }
+          };
+        }
+        return node;
+      })
+    );
+  }, [setNodes]);
 
   // 连接节点时的回调
   const onConnect = useCallback(
@@ -127,6 +134,46 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
 
   // 从 JSON 配置生成节点和边
   const generateFlowFromJSON = useCallback((config) => {
+    // 检查配置格式
+    const isSimplifiedFormat = config.nodes && config.edges;
+    
+    // 如果是简化格式（从 session 恢复）
+    if (isSimplifiedFormat) {
+      // 恢复节点和边
+      const restoredNodes = config.nodes.map(node => {
+        // 重新绑定回调函数
+        if (node.type === 'inputNode') {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              onInputChange: handleInputChange,
+            }
+          };
+        } else if (node.type === 'agentNode') {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              onInstructionsChange: handleInstructionsChange,
+              onHandoffDescChange: handleHandoffDescChange,
+              onToolsChange: handleToolsChange,
+            }
+          };
+        }
+        return node;
+      });
+      
+      setNodes(restoredNodes);
+      setEdges(config.edges);
+      setUserInput(config.userInput || '');
+      setAgentInstructions(config.agentInstructions || {});
+      setAgentHandoffDescs(config.agentHandoffDescs || {});
+      setAgentTools(config.agentTools || {});
+      return;
+    }
+
+    // 标准格式（从 JSON 文件导入）
     const { starter_agent, agents } = config;
     const newNodes = [];
     const newEdges = [];
@@ -135,6 +182,7 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
     setUserInput('');
     setAgentInstructions({});
     setAgentHandoffDescs({});
+    setAgentTools({});
 
     // 添加输入节点
     const inputNode = {
@@ -152,6 +200,10 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
     // 为每个 agent 创建节点
     agents.forEach((agent, index) => {
       const isStarter = agent.name === starter_agent;
+
+      // 过滤掉不存在的工具
+      const validTools = (agent.tools || []).filter(toolId => getToolById(toolId) !== undefined);
+
       const node = {
         id: agent.name,
         type: 'agentNode',
@@ -163,12 +215,13 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
           name: agent.name,
           instructions: agent.instructions,
           handoff_description: agent.handoff_description,
-          tools: agent.tools || [],
+          tools: validTools,
           handoffs: agent.handoffs || [],
           isStarter: isStarter,
           type: getAgentType(agent.name),
           onInstructionsChange: handleInstructionsChange,
           onHandoffDescChange: handleHandoffDescChange,
+          onToolsChange: handleToolsChange,
         },
       };
       newNodes.push(node);
@@ -238,20 +291,134 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
       }
     });
 
-    // 初始化所有 Agent 的 instructions 和 handoff_description
+    // 初始化所有 Agent 的 instructions、handoff_description 和 tools
     const initialInstructions = {};
     const initialHandoffDescs = {};
+    const initialAgentTools = {};
     agents.forEach((agent) => {
       initialInstructions[agent.name] = agent.instructions;
       initialHandoffDescs[agent.name] = agent.handoff_description || '';
+      
+      // 过滤掉不存在的工具
+      const validTools = (agent.tools || []).filter(toolId => getToolById(toolId) !== undefined);
+      initialAgentTools[agent.name] = validTools;
     });
     setAgentInstructions(initialInstructions);
     setAgentHandoffDescs(initialHandoffDescs);
+    setAgentTools(initialAgentTools);
 
     setNodes(newNodes);
     setEdges(newEdges);
-    setWorkflowConfig(config);
-  }, [setNodes, setEdges, handleInputChange, handleInstructionsChange, handleHandoffDescChange, setUserInput, setAgentInstructions, setAgentHandoffDescs]);
+    
+    // 保存到 session（如果提供了回调）
+    if (onWorkflowConfigChange) {
+      onWorkflowConfigChange(config);
+    }
+  }, [setNodes, setEdges, handleInputChange, handleInstructionsChange, handleHandoffDescChange, handleToolsChange, setUserInput, setAgentInstructions, setAgentHandoffDescs, onWorkflowConfigChange]);
+
+  // ============ useEffect 区域 ============
+
+  // 监听 sessionName 变化（包括初始加载和切换）
+  useEffect(() => {
+    // 检测是否是首次加载或 session 切换
+    const isSessionChanged = sessionName !== currentSessionName;
+    
+    if (isSessionChanged) {
+      console.log(`Session 变化: "${currentSessionName}" -> "${sessionName}"`);
+      setCurrentSessionName(sessionName);
+      
+      // 标记为初始挂载，避免在恢复配置时触发自动保存
+      isInitialMount.current = true;
+      
+      // 清空当前工作流状态
+      setNodes([]);
+      setEdges([]);
+      setUserInput('');
+      setAgentInstructions({});
+      setAgentHandoffDescs({});
+      setAgentTools({});
+      setRunResult(null);
+      
+      // 延迟一帧，确保状态已经清空
+      requestAnimationFrame(() => {
+        // 如果有保存的工作流配置，恢复它
+        if (workflowConfig) {
+          console.log(`恢复 "${sessionName}" 的工作流配置`, workflowConfig);
+          generateFlowFromJSON(workflowConfig);
+        } else {
+          console.log(`"${sessionName}" 没有工作流配置`);
+        }
+      });
+    }
+  }, [sessionName, currentSessionName, workflowConfig, generateFlowFromJSON, setNodes, setEdges]);
+
+  // 监听 edges 变化，动态更新节点的 handoffs 显示
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        // 只更新 Agent 节点
+        if (node.type === 'agentNode') {
+          // 从 edges 中找出当前节点连接到的所有 Agent 节点
+          const handoffs = edges
+            .filter((edge) => edge.source === node.id)
+            .map((edge) => edge.target)
+            .filter((targetId) => {
+              // 排除 input 和 output 节点
+              return targetId !== 'input-node' && targetId !== 'output-node';
+            });
+
+          // 更新节点的 handoffs 数据
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              handoffs: handoffs,
+            },
+          };
+        }
+        return node;
+      })
+    );
+  }, [edges, setNodes]);
+
+  // 自动保存工作流状态到 Session（当节点或边变化时）
+  useEffect(() => {
+    // 跳过首次挂载时的保存（避免覆盖正在恢复的配置）
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // 延迟保存，避免频繁触发
+    if (onWorkflowConfigChange) {
+      const timer = setTimeout(() => {
+        try {
+          // 构建简化的配置对象（允许保存空配置）
+          const config = {
+            nodes: nodes.map(node => ({
+              id: node.id,
+              type: node.type,
+              position: node.position,
+              data: node.data
+            })),
+            edges: edges,
+            agentInstructions,
+            agentHandoffDescs,
+            agentTools,
+            userInput
+          };
+          console.log(`自动保存工作流 (${nodes.length} 个节点):`, config);
+          onWorkflowConfigChange(config);
+        } catch (error) {
+          console.error('Failed to save workflow config:', error);
+        }
+      }, 500); // 减少到 0.5 秒，提升响应速度
+
+      return () => clearTimeout(timer);
+    }
+  }, [nodes, edges, agentInstructions, agentHandoffDescs, agentTools, userInput, onWorkflowConfigChange]);
+
+  // ============ 其他回调函数 ============
 
   // 导入 JSON 文件
   const handleFileUpload = useCallback((event) => {
@@ -345,13 +512,13 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
 
     // 4. 构建 agents 数组
     const exportedAgents = agentNodes.map((node) => {
-      const { name, type, tools, output_parameters } = node.data;
+      const { name, type, output_parameters } = node.data;
       
       return {
         name: name,
         instructions: agentInstructions[name] || node.data.instructions || '',
         handoff_description: agentHandoffDescs[name] || node.data.handoff_description || '',
-        tools: tools || [],
+        tools: agentTools[name] || node.data.tools || [],
         handoffs: agentHandoffsMap[node.id] || [],
         output_parameters: output_parameters || null,
       };
@@ -376,12 +543,13 @@ const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
 
     // 提示用户
     alert(`✅ 配置已导出！\n包含 ${exportedAgents.length} 个 Agent 节点和实际的连线关系。`);
-  }, [nodes, edges, agentInstructions, agentHandoffDescs]);
+  }, [nodes, edges, agentInstructions, agentHandoffDescs, agentTools]);
 
   // 运行工作流
   const handleRunWorkflow = useCallback(async () => {
-    if (!workflowConfig) {
-      alert('请先加载工作流配置');
+    // 检查是否有节点
+    if (nodes.length === 0) {
+      alert('请先加载或创建工作流配置');
       return;
     }
 
@@ -512,6 +680,7 @@ ${idx + 1}. ${step.agent}
         isStarter: false,
         onInstructionsChange: handleInstructionsChange,
         onHandoffDescChange: handleHandoffDescChange,
+        onToolsChange: handleToolsChange,
       },
     };
 
@@ -590,7 +759,7 @@ ${idx + 1}. ${step.agent}
       <div className="panel-header">
         <div className="panel-title">
           <span className="panel-icon">🎨</span>
-          <h3>Agent 工作流编排</h3>
+          <h3>{sessionName}的工作流编排</h3>
         </div>
         <button className="panel-toggle" onClick={onToggle} title="收起">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
