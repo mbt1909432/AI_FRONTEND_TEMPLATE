@@ -25,6 +25,30 @@ function Footer() {
               <li><a href="#github">{t('footer.github')}</a></li>
             </ul>
           </div>
+
+          <div className="footer-section">
+            <h3 className="footer-title">{t('footer.contact')}</h3>
+            <ul className="footer-links">
+              <li>
+                <span className="contact-item">
+                  <span className="contact-icon">💬</span>
+                  {t('footer.wechat')}
+                </span>
+              </li>
+              <li>
+                <a 
+                  href="https://www.xiaohongshu.com/user/profile/5f6da2890000000001005f0c" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="contact-link"
+                >
+                  <span className="contact-icon">📕</span>
+                  {t('footer.xiaohongshu')}
+                </a>
+              </li>
+              <li className="welcome-text">{t('footer.welcome')}</li>
+            </ul>
+          </div>
         </div>
         
         <div className="footer-bottom">

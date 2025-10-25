@@ -44,12 +44,40 @@
   color: #666;
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s;
+  transition: all 0.3s;
 }
 
 .footer-links a:hover {
   color: #667eea;
-  transform: translateX(4px);
+}
+
+/* 联系方式样式 */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-icon {
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.welcome-text {
+  color: #667eea;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+  font-style: italic;
 }
 
 .footer-bottom {
