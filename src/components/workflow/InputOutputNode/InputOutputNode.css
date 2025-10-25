@@ -1,0 +1,273 @@
+/* 输入输出节点样式 */
+.io-node {
+  background: rgba(30, 33, 50, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  width: 220px;
+  height: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.io-node:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* 输入节点 */
+.io-node.input-node {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 33, 50, 0.95) 50%);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.io-node.input-node:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* 输出节点 */
+.io-node.output-node {
+  border-color: #10b981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(30, 33, 50, 0.95) 50%);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.io-node.output-node:hover {
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* 连接点 */
+.io-handle {
+  width: 14px;
+  height: 14px;
+  border: 3px solid;
+  transition: all 0.3s;
+}
+
+.io-handle.input {
+  background: rgba(59, 130, 246, 0.8);
+  border-color: #3b82f6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+}
+
+.io-handle.output {
+  background: rgba(16, 185, 129, 0.8);
+  border-color: #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+}
+
+.io-handle:hover {
+  width: 18px;
+  height: 18px;
+  box-shadow: 0 0 20px currentColor;
+}
+
+/* 节点头部 */
+.io-node-header {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.io-icon {
+  font-size: 28px;
+  filter: drop-shadow(0 2px 8px rgba(59, 130, 246, 0.4));
+}
+
+.io-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* 节点主体 */
+.io-node-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.io-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.io-description {
+  font-size: 13px;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+/* 输入编辑器 */
+.input-editor {
+  margin-top: 8px;
+}
+
+.input-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-size: 13px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.input-textarea::placeholder {
+  color: #6b7280;
+}
+
+.input-textarea:focus {
+  border-color: #3b82f6;
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1), 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.input-textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.input-textarea::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.input-textarea::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.4);
+  border-radius: 3px;
+}
+
+/* 输出结果显示 */
+.output-result {
+  margin-top: 8px;
+  padding: 12px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 8px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.4));
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #34d399;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.result-content {
+  font-size: 13px;
+  color: #e5e7eb;
+  line-height: 1.6;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.result-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.result-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.result-content::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.4);
+  border-radius: 3px;
+}
+
+/* 有结果时的输出节点效果 */
+.output-node.has-result {
+  border-color: #10b981;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.7), 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.io-type {
+  margin-top: 4px;
+}
+
+.type-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #60a5fa;
+}
+
+.output-node .type-badge {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+/* 选中状态 */
+.io-node.selected {
+  border-width: 3px;
+  z-index: 1000 !important;
+}
+
+.input-node.selected {
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 12px 48px rgba(0, 0, 0, 0.7);
+}
+
+.output-node.selected {
+  box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), 0 12px 48px rgba(0, 0, 0, 0.7);
+}
+

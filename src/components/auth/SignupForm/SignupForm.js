@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './AuthForm.css';
+import '../AuthForm.css';
 
 function SignupForm({ onClose, onSwitchToLogin }) {
   const { t } = useTranslation();

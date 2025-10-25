@@ -1,0 +1,58 @@
+{
+  "starter_agent": "TriageAgent",
+  "agents": [
+    {
+      "name": "TriageAgent",
+      "instructions": "你是智能分流助手，分析用户需求并转发给对应的专家。",
+      "handoff_description": "处理所有用户初始请求，并识别需求（数据提取、计算分析或结果总结）",
+      "tools": [],
+      "handoffs": [
+        "DataExtractionAgent",
+        "DataCalculationAgent",
+        "ReportGenerationAgent"
+      ],
+      "output_parameters": null
+    },
+    {
+      "name": "DataExtractionAgent",
+      "instructions": "你是数据提取专家，负责从文本中识别和提取关键数据。",
+      "handoff_description": "负责从文本中提取关键数据",
+      "tools": [
+        "text_analysis"
+      ],
+      "handoffs": [
+        "DataCalculationAgent"
+      ],
+      "output_parameters": {
+        "extracted_data": "文本中提取的关键数据"
+      }
+    },
+    {
+      "name": "DataCalculationAgent",
+      "instructions": "你是数据计算专家，使用数学计算工具进行数据分析。",
+      "handoff_description": "接收提取的数据并进行计算分析",
+      "tools": [
+        "calculate"
+      ],
+      "handoffs": [
+        "ReportGenerationAgent"
+      ],
+      "output_parameters": {
+        "calculated_results": "数据计算结果"
+      }
+    },
+    {
+      "name": "ReportGenerationAgent",
+      "instructions": "你是报告生成专家，负责总结分析结果并生成详细的报告。",
+      "handoff_description": "负责生成分析报告",
+      "tools": [
+        "report_builder"
+      ],
+      "handoffs": [],
+      "output_parameters": {
+        "analysis_report": "完整的分析报告"
+      }
+    }
+  ]
+}
+

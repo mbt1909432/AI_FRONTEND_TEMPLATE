@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Templates.css';
-import { getTemplates, getCategories } from '../data/templates';
+import { getTemplates, getCategories } from '../../../data/templates';
 
 function Templates() {
   const { t } = useTranslation();

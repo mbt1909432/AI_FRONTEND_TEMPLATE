@@ -22,7 +22,9 @@ AgentBuilder 是一款旨在通过对话生成 Agentic System 的创新平台。
 
 - 🤖 **对话式构建** - 通过自然语言对话即可构建复杂的 Agent 系统
 - 🚀 **零代码开发** - 无需编写任何代码，降低技术门槛
-- 📊 **自动编排** - 智能工作流自动生成，无需手动配置
+- 📊 **可视化编排** - ComfyUI 风格的可拖拽节点编辑器
+- 🎨 **Agent 工作流** - 支持多 Agent 协作、任务交接（Handoff）
+- 📥 **JSON 导入导出** - 拖拽上传 JSON 配置，一键导出工作流
 - ⚡ **高可用性** - 企业级系统架构，保证服务稳定性
 - 💰 **成本优化** - 显著降低 Agent 构建和维护成本
 - 🌍 **国际化支持** - 完整的中英双语界面
@@ -76,6 +78,27 @@ docker-compose up -d
 
 详细的 Docker 部署指南请查看 [DOCKER.md](DOCKER.md)
 
+### 方式三：CI/CD 自动部署（生产环境）
+
+本项目支持通过 GitHub Actions 自动构建和部署：
+
+```bash
+# 推送到 main 分支触发自动部署
+git push origin main
+```
+
+**部署流程：**
+1. 🔨 自动构建 Docker 镜像
+2. 📦 推送到 GitHub Container Registry
+3. 🚀 SSH 连接服务器自动部署
+4. ✅ 容器自动启动和健康检查
+
+**配置指南：**
+- 📋 [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) - 完整部署指南
+- ✅ [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) - 快速配置清单
+
+部署后访问: `http://your-server-ip:1923`
+
 ### 生产构建
 
 ```bash
@@ -118,6 +141,8 @@ agentic-system-builder/
 | 技术 | 版本 | 用途 |
 |------|------|------|
 | React | 18.2.0 | UI 框架 |
+| React Router | 6.30.1 | 路由管理 |
+| ReactFlow | 最新 | 节点编辑器 |
 | i18next | 23.7.6 | 国际化 |
 | react-i18next | 13.5.0 | React 国际化集成 |
 | i18next-browser-languagedetector | 7.2.0 | 语言自动检测 |
@@ -144,6 +169,9 @@ agentic-system-builder/
 - [SETUP.md](SETUP.md) - 详细的设置和配置指南
 - [PROJECT_MANAGEMENT.md](PROJECT_MANAGEMENT.md) - 项目管理和开发规范
 - [CONTRIBUTING.md](CONTRIBUTING.md) - 如何为项目做贡献
+- [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) - CI/CD 部署完整指南
+- [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) - 部署快速配置清单
+- [DOCKER.md](DOCKER.md) - Docker 部署说明
 
 ---
 
@@ -163,6 +191,79 @@ agentic-system-builder/
 10. 📧 邮件自动分类
 11. 💰 财务报表分析
 12. 🔧 API 测试 Agent
+
+---
+
+## 🎨 Agent 工作流编辑器
+
+全新的 **ComfyUI 风格**可视化节点编辑器，支持：
+
+### 功能特性
+
+- ✅ **可拖拽节点** - 自由拖动和连接 Agent 节点
+- ✅ **输入输出口** - 自动添加输入节点和输出节点
+- ✅ **JSON 配置** - 支持导入导出 JSON 工作流配置
+- ✅ **拖拽上传** - 直接拖拽 JSON 文件到编辑器
+- ✅ **Run 按钮** - 一键运行工作流，实时查看执行结果
+- ✅ **多 Agent 协作** - 支持 Agent 间任务交接（Handoff）
+- ✅ **工具集成** - 为每个 Agent 配置专属工具
+- ✅ **执行动画** - 工作流运行时高亮显示执行路径
+
+### JSON 配置格式
+
+```json
+{
+  "starter_agent": "TriageAgent",
+  "agents": [
+    {
+      "name": "TriageAgent",
+      "instructions": "你是智能分流助手，分析用户需求并转发给对应的专家。",
+      "tools": [],
+      "handoffs": ["DataExtractionAgent", "DataCalculationAgent"],
+      "output_parameters": null
+    }
+  ]
+}
+```
+
+### 节点类型配色
+
+| 类型 | 颜色 | 说明 |
+|------|------|------|
+| 📥 Input | 蓝色 | 输入节点 |
+| 🚀 Starter | 绿色 | 起始 Agent |
+| 🔵 Extraction | 蓝色 | 数据提取 |
+| 🟣 Calculation | 紫色 | 数据计算 |
+| 🟠 Report | 橙色 | 报告生成 |
+| 📤 Output | 翠绿色 | 输出节点 |
+
+### 使用方法
+
+1. **加载示例** - 点击"加载示例"按钮查看预设工作流
+2. **上传 JSON** - 点击"上传"或直接拖拽 JSON 文件
+3. **编辑节点** - 拖动节点位置，连接节点关系
+4. **运行工作流** - 点击绿色"Run"按钮执行工作流
+5. **查看结果** - 右下角弹出执行结果面板
+6. **导出配置** - 点击"导出"下载工作流配置
+
+📄 **示例配置**: 项目根目录的 `example-workflow.json`
+
+### 工作流结构
+
+```
+📥 输入节点
+    ↓
+🚀 起始 Agent (Starter)
+    ↓
+🔵 数据提取 Agent → 🟣 计算 Agent → 🟠 报告 Agent
+    ↓
+📤 输出节点
+```
+
+每个工作流自动包含：
+- **输入口** - 接收用户请求
+- **Agent 节点链** - 按照 handoffs 连接
+- **输出口** - 返回最终结果
 
 ---
 

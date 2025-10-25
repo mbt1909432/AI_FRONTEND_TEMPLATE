@@ -1,10 +1,12 @@
-version: '3.8'
 
 services:
   chat-to-agent:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # 本地开发时使用 build，生产环境使用 image
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: ghcr.io/${GIT_USER:-your-github-username}/chat-to-agent:latest
+    pull_policy: always  # 总是拉取最新镜像，确保版本正确
     ports:
       - "1923:80"
     container_name: chat-to-agent

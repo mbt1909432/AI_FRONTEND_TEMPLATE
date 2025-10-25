@@ -1,0 +1,341 @@
+/* Agent 节点样式 - ComfyUI 风格 */
+.agent-node {
+  background: rgba(30, 33, 50, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  width: 320px;
+  height: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+}
+
+.agent-node:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* 节点类型配色 */
+.agent-node.starter {
+  border-color: #22c55e;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.agent-node.starter:hover {
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.5), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.agent-node.extraction {
+  border-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.agent-node.extraction:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.agent-node.calculation {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.agent-node.calculation:hover {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.agent-node.report {
+  border-color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.agent-node.report:hover {
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.agent-node.default {
+  border-color: #6b7280;
+  box-shadow: 0 0 20px rgba(107, 114, 128, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* 连接点样式 */
+.agent-handle {
+  width: 12px;
+  height: 12px;
+  background: rgba(139, 92, 246, 0.8);
+  border: 2px solid #8b5cf6;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+  transition: all 0.3s;
+}
+
+.agent-handle:hover {
+  width: 16px;
+  height: 16px;
+  background: #8b5cf6;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 1);
+}
+
+.agent-handle.handle-input {
+  background: rgba(34, 197, 94, 0.8);
+  border-color: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+}
+
+.agent-handle.handle-input:hover {
+  background: #22c55e;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 1);
+}
+
+.agent-handle.handle-output {
+  background: rgba(239, 68, 68, 0.8);
+  border-color: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+}
+
+.agent-handle.handle-output:hover {
+  background: #ef4444;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 1);
+}
+
+/* 节点头部 */
+.agent-node-header {
+  position: relative;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.starter-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.agent-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 8px rgba(139, 92, 246, 0.4));
+}
+
+.agent-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* 节点主体 */
+.agent-node-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.agent-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-btn {
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 10px;
+  color: #a78bfa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-btn:hover {
+  background: rgba(139, 92, 246, 0.25);
+  border-color: #8b5cf6;
+  transform: scale(1.05);
+}
+
+.section-content {
+  font-size: 13px;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.section-content.instructions {
+  max-height: 80px;
+  overflow-y: auto;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.section-content.instructions::-webkit-scrollbar {
+  width: 4px;
+}
+
+.section-content.instructions::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.section-content.instructions::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.4);
+  border-radius: 2px;
+}
+
+/* Instructions 编辑器 */
+.instructions-editor {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 13px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.instructions-editor::placeholder {
+  color: #6b7280;
+}
+
+.instructions-editor:focus {
+  border-color: #8b5cf6;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15), 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+.instructions-editor::-webkit-scrollbar {
+  width: 4px;
+}
+
+.instructions-editor::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.instructions-editor::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.5);
+  border-radius: 2px;
+}
+
+/* Handoff Description 编辑器 */
+.handoff-editor {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 13px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.handoff-editor::placeholder {
+  color: #6b7280;
+}
+
+.handoff-editor:focus {
+  border-color: #3b82f6;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15), 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+.handoff-editor::-webkit-scrollbar {
+  width: 4px;
+}
+
+.handoff-editor::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.handoff-editor::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 2px;
+}
+
+.section-content.handoff-desc {
+  font-size: 12px;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+/* 工具和交接标签 */
+.tools-list,
+.handoffs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tool-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fbbf24;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.1);
+}
+
+.handoff-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a78bfa;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.1);
+}
+
+/* 选中状态 */
+.agent-node.selected {
+  border-width: 3px;
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 0 12px 48px rgba(0, 0, 0, 0.7);
+  z-index: 1000 !important;
+}
+
+

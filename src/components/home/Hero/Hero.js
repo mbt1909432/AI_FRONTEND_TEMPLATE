@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Hero.css';
 
 function Hero() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [prompt, setPrompt] = useState('');
   const [isThinking, setIsThinking] = useState(false);
 
@@ -11,11 +13,11 @@ function Hero() {
     e.preventDefault();
     if (prompt.trim()) {
       setIsThinking(true);
-      // Simulate processing
+      // 模拟处理，然后跳转到聊天页面
       setTimeout(() => {
         setIsThinking(false);
-        console.log('Processing prompt:', prompt);
-      }, 2000);
+        navigate('/chat', { state: { prompt } });
+      }, 1000);
     }
   };
 

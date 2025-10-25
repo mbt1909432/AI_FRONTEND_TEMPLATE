@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Header.css';
-import LanguageSwitcher from './LanguageSwitcher';
-import Modal from './Modal';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
+import LanguageSwitcher from '../../common/LanguageSwitcher';
+import Modal from '../../common/Modal';
+import LoginForm from '../../auth/LoginForm';
+import SignupForm from '../../auth/SignupForm';
 
 function Header() {
   const { t } = useTranslation();

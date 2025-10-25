@@ -1,0 +1,29 @@
+
+services:
+  chat-to-agent:
+    image: ghcr.io/${GIT_USER:-your-github-username}/chat-to-agent:latest
+    pull_policy: always  # 生产环境强制拉取最新镜像
+    container_name: chat-to-agent
+    restart: unless-stopped
+    ports:
+      - "1923:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - chat-to-agent-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  chat-to-agent-network:
+    driver: bridge
+

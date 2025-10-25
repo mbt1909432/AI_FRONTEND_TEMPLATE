@@ -1,0 +1,72 @@
+on:
+  push:
+    branches: [ main ]
+
+permissions: #需要写入权限 否则不行 https://github.com/JamesIves/github-pages-deploy-action
+  contents: write
+
+jobs:
+  pnpm-build:
+    name: 构建fastapi基本服务
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: copy dockerfile and nginx configuration from deployment folder to the according folder
+        run: |
+          cd deployment
+          chmod +x copy_file.sh
+          ./copy_file.sh
+
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: 更新 known_hosts 文件,否则无法进行后续连接  # 步驟的名稱
+        run: |  # 將要執行的命令
+          mkdir -p ~/.ssh 
+          echo "----------------------"
+          cat ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.HOST_NAME }} >> ~/.ssh/known_hosts
+          echo "----------------------"
+          cat ~/.ssh/known_hosts
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GIT_USER }}
+          password: ${{ secrets.GIT_TOKEN }}
+
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+         context: ./backend #工作流会在 ./backend 目录下查找 Dockerfile 和相关文件（如依赖项、源代码等）。
+         push: true
+         tags: ghcr.io/${{ secrets.GIT_USER}}/backend:1.0  # 使用你的 Docker Hub 使用者名稱和應用程式名
+
+
+      - name: Build and push frontend and nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: . #backend疑似会被拷贝进去。。。
+          push: true
+          tags: ghcr.io/${{ secrets.GIT_USER}}/frontend_nginx:1.0  # 使用你的 Docker Hub 使用者名稱和應用程式名
+
+
+       - name: Deploy to server
+         run: |
+          scp ./deployment/app-compose.yml root@${{ secrets.HOST_NAME }}:./project_config/AI_Research_Project/app-compose.yml
+          scp ./deployment/.env root@${{ secrets.HOST_NAME }}:./project_config/AI_Research_Project/.env
+          ssh root@${{ secrets.HOST_NAME }} "docker login --username ${{ secrets.GIT_USER }} --password ${{ secrets.GIT_TOKEN }} ghcr.io && cd project_config/AI_Research_Project && docker compose -f app-compose.yml up -d"
+
+#
+#跑完之后会多一个 gp-pages分支，这个分支就是生产环境文件
+#需要进行仓库settings--->page 指明使用gp pages分支
+
+#原始配置中没有 actions/checkout@v4 步骤，
+#这意味着工作流无法获取你的代码仓库内容
