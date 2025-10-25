@@ -1,7 +1,7 @@
 
 services:
   chat-to-agent:
-    image: ghcr.io/${GIT_USER:-your-github-username}/chat-to-agent:latest
+    image: ghcr.io/mbt1909432/chat-to-agent:latest
     pull_policy: always  # 生产环境强制拉取最新镜像
     container_name: chat-to-agent
     restart: unless-stopped

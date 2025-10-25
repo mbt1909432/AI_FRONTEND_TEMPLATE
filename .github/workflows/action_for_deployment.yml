@@ -56,6 +56,7 @@ jobs:
           ssh root@${{ secrets.HOST_NAME }} "mkdir -p ~/chat-to-agent"
           scp docker-compose.yml root@${{ secrets.HOST_NAME }}:~/chat-to-agent/docker-compose.yml
           ssh root@${{ secrets.HOST_NAME }} "
+            export GIT_USER=${{ secrets.GIT_USER }} &&
             docker login --username ${{ secrets.GIT_USER }} --password ${{ secrets.GIT_TOKEN }} ${{ env.REGISTRY }} &&
             cd ~/chat-to-agent &&
             docker compose pull &&
