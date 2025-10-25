@@ -19,7 +19,7 @@ const nodeTypes = {
   outputNode: OutputNode,
 };
 
-const AgentFlowEditor = ({ isCollapsed, onToggle }) => {
+const AgentFlowEditor = ({ isCollapsed, onToggle, isOpen = false }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [workflowConfig, setWorkflowConfig] = useState(null);
@@ -575,7 +575,7 @@ ${idx + 1}. ${step.agent}
 
   if (isCollapsed) {
     return (
-      <div className="agent-flow-editor collapsed">
+      <div className={`agent-flow-editor collapsed ${isOpen ? 'open' : ''}`}>
         <button className="panel-toggle" onClick={onToggle} title="展开工作流">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M15 18l-6-6 6-6"/>
@@ -586,7 +586,7 @@ ${idx + 1}. ${step.agent}
   }
 
   return (
-    <aside className="agent-flow-editor">
+    <aside className={`agent-flow-editor ${isOpen ? 'open' : ''}`}>
       <div className="panel-header">
         <div className="panel-title">
           <span className="panel-icon">🎨</span>

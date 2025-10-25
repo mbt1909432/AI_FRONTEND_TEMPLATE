@@ -21,6 +21,8 @@ function ChatPage() {
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const [isWorkflowCollapsed, setIsWorkflowCollapsed] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isWorkflowOpen, setIsWorkflowOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -63,8 +65,19 @@ function ChatPage() {
 
   return (
     <div className="chat-page">
+      {/* 遮罩层（移动端） */}
+      {(isSidebarOpen || isWorkflowOpen) && (
+        <div 
+          className="mobile-overlay"
+          onClick={() => {
+            setIsSidebarOpen(false);
+            setIsWorkflowOpen(false);
+          }}
+        />
+      )}
+
       {/* 左侧边栏 */}
-      <aside className="chat-sidebar">
+      <aside className={`chat-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <span className="sidebar-logo-text">Chat To Agent</span>
@@ -97,6 +110,29 @@ function ChatPage() {
 
       {/* 主对话区 */}
       <main className="chat-main">
+        {/* 移动端顶部栏 */}
+        <div className="mobile-header">
+          <button 
+            className="mobile-menu-btn"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            aria-label="Toggle sidebar"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+          <span className="mobile-title">Chat To Agent</span>
+          <button 
+            className="mobile-workflow-btn"
+            onClick={() => setIsWorkflowOpen(!isWorkflowOpen)}
+            aria-label="Toggle workflow"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2v4m0 12v4M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+            </svg>
+          </button>
+        </div>
+
         <div className="chat-messages">
           {messages.map((message) => (
             <div key={message.id} className={`message ${message.role}`}>
@@ -162,6 +198,7 @@ function ChatPage() {
       <AgentFlowEditor 
         isCollapsed={isWorkflowCollapsed}
         onToggle={() => setIsWorkflowCollapsed(!isWorkflowCollapsed)}
+        isOpen={isWorkflowOpen}
       />
     </div>
   );
